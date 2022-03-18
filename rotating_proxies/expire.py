@@ -129,7 +129,7 @@ class Proxies(object):
     def add(self, proxy):
         """ Add a proxy to the proxy list """
         if proxy in self.proxies:
-            logger.warn("Proxy <%s> is already in proxies list" % proxy)
+            logger.warning("Proxy <%s> is already in proxies list" % proxy)
             return
 
         hostport = extract_proxy_hostport(proxy)
@@ -143,7 +143,7 @@ class Proxies(object):
         if 'add()' is called.
         """
         if proxy not in self.proxies:
-            logger.warn("Proxy <%s> was not found in proxies list" % proxy)
+            logger.warning("Proxy <%s> was not found in proxies list" % proxy)
             return
 
         logger.debug("Removing proxy <%s> from proxies list" % proxy)
