@@ -101,8 +101,12 @@ class RotatingProxyMiddleware(object):
         )
         crawler.signals.connect(mw.proxies.add,
                                 signal="ADD_PROXY")
+        crawler.signals.connect(mw.proxies.mark_good,
+                                signal="MARK_GOOD")
         crawler.signals.connect(mw.proxies.remove,
                                 signal="REMOVE_PROXY")
+        crawler.signals.connect(mw.proxies.mark_dead,
+                                signal="MARK_DEAD")
         crawler.signals.connect(mw.engine_started,
                                 signal=signals.engine_started)
         crawler.signals.connect(mw.engine_stopped,
