@@ -132,7 +132,7 @@ class RotatingProxyMiddleware(object):
         proxy = self.proxies.get_random()
         if not proxy:
             if self.stop_if_no_proxies:
-                raise CloseSpider("no_proxies")
+                spider.crawler.engine.close_spider(self, reason='no_proxies')
             else:
                 logger.warn("No proxies available; marking all proxies "
                             "as unchecked")
