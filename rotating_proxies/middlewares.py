@@ -11,7 +11,7 @@ from scrapy.utils.misc import load_object
 from scrapy.utils.url import add_http_if_no_scheme
 from twisted.internet import task
 
-from .expire import Proxies, exp_backoff_full_jitter
+from rotating_proxies.expire import Proxies, exp_backoff_full_jitter
 
 
 logger = logging.getLogger(__name__)
