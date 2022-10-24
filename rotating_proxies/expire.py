@@ -68,7 +68,7 @@ class Proxies(object):
     def mark_dead(self, proxy, _time=None):
         """ Mark a proxy as dead """
         if proxy not in self.proxies:
-            logger.warn("Proxy <%s> was not found in proxies list" % proxy)
+            logger.warning("Proxy <%s> was not found in proxies list" % proxy)
             return
 
         if proxy in self.good:
@@ -92,7 +92,7 @@ class Proxies(object):
     def mark_good(self, proxy):
         """ Mark a proxy as good """
         if proxy not in self.proxies:
-            logger.warn("Proxy <%s> was not found in proxies list" % proxy)
+            logger.warning("Proxy <%s> was not found in proxies list" % proxy)
             return
 
         if proxy not in self.good:
