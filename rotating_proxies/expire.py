@@ -32,6 +32,7 @@ class Proxies(object):
     'reanimated'). This timeout increases exponentially after each
     unsuccessful attempt to use a proxy.
     """
+
     def __init__(self, proxy_list, backoff=None, crawler=None):
         self.proxies = {url: ProxyState() for url in proxy_list}
         self.proxies_by_hostport = {
@@ -57,7 +58,7 @@ class Proxies(object):
     def get_proxy(self, proxy_address):
         """
         Return complete proxy name associated with a hostport of a given
-        ``proxy_address``. If ``proxy_address`` is unkonwn or empty,
+        ``proxy_address``. If ``proxy_address`` is unknown or empty,
         return None.
         """
         if not proxy_address:
@@ -125,7 +126,6 @@ class Proxies(object):
             self.dead.remove(proxy)
             self.unchecked.add(proxy)
 
-
     def add(self, proxy):
         """ Add a proxy to the proxy list """
         if proxy in self.proxies:
@@ -168,11 +168,8 @@ class Proxies(object):
     def __str__(self):
         n_reanimated = len(self.reanimated)
         return "Proxies(good: {}, dead: {}, unchecked: {}, reanimated: {}, " \
-               "mean backoff time: {}s)".format(
-            len(self.good), len(self.dead),
-            len(self.unchecked) - n_reanimated, n_reanimated,
-            int(self.mean_backoff_time),
-        )
+               "mean backoff time: {}s)".format(len(self.good), len(self.dead), len(self.unchecked) - n_reanimated,
+                                                n_reanimated, int(self.mean_backoff_time), )
 
 
 @attr.s
