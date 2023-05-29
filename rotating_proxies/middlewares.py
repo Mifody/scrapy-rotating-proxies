@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-import logging
-import codecs
-from functools import partial
-from six.moves.urllib.parse import urlsplit
 
-from scrapy.exceptions import CloseSpider, NotConfigured
+import codecs
+import logging
+from functools import partial
+
 from scrapy import signals
+from scrapy.exceptions import CloseSpider, NotConfigured
 from scrapy.utils.misc import load_object
 from scrapy.utils.url import add_http_if_no_scheme
+from six.moves.urllib.parse import urlsplit
 from twisted.internet import task
 
 from rotating_proxies.expire import Proxies, exp_backoff_full_jitter
-
+from rotating_proxies.signals import proxy_add, proxy_remove, proxy_dead, proxy_mark_good
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +64,7 @@ class RotatingProxyMiddleware(object):
     * ``ROTATING_PROXY_BACKOFF_CAP`` - backoff time cap, in seconds.
       Default is 3600 (i.e. 60 min).
     """
+
     def __init__(self, proxy_list, logstats_interval, stop_if_no_proxies,
                  max_proxies_to_try, backoff_base, backoff_cap, crawler):
 
@@ -99,18 +101,12 @@ class RotatingProxyMiddleware(object):
             backoff_cap=s.getfloat('ROTATING_PROXY_BACKOFF_CAP', 3600),
             crawler=crawler,
         )
-        crawler.signals.connect(mw.proxies.add,
-                                signal="ADD_PROXY")
-        crawler.signals.connect(mw.proxies.mark_good,
-                                signal="MARK_GOOD")
-        crawler.signals.connect(mw.proxies.remove,
-                                signal="REMOVE_PROXY")
-        crawler.signals.connect(mw.proxies.mark_dead,
-                                signal="MARK_DEAD")
-        crawler.signals.connect(mw.engine_started,
-                                signal=signals.engine_started)
-        crawler.signals.connect(mw.engine_stopped,
-                                signal=signals.engine_stopped)
+        crawler.signals.connect(mw.proxies.add, signal=proxy_add)
+        crawler.signals.connect(mw.proxies.mark_good, signal=proxy_mark_good)
+        crawler.signals.connect(mw.proxies.remove, signal=proxy_remove)
+        crawler.signals.connect(mw.proxies.mark_dead, signal=proxy_dead)
+        crawler.signals.connect(mw.engine_started, signal=signals.engine_started)
+        crawler.signals.connect(mw.engine_stopped, signal=signals.engine_stopped)
         return mw
 
     def engine_started(self):
@@ -274,6 +270,7 @@ class BanDetectionMiddleware(object):
                 return None
 
     """
+
     def __init__(self, stats, policy):
         self.stats = stats
         self.policy = policy

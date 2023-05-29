@@ -20,7 +20,7 @@ def get_long_description():
 
 
 setup(
-    name='scrapy-rotating-proxies-ext',
+    name='scrapy-rotating-proxies',
     version=get_version(),
     author='Mikhail Korobov',
     author_email='kmike84@gmail.com',
@@ -30,8 +30,9 @@ setup(
     url='https://github.com/TeamHG-Memex/scrapy-rotating-proxies',
     packages=find_packages(exclude=['tests']),
     install_requires=[
-        'attrs',
-        # 'typing',
+        'attrs > 16.0.0',
+        'six',
+        'typing',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
