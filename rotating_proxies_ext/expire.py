@@ -9,10 +9,12 @@ import attr
 
 from .utils import extract_proxy_hostport
 
+from rotating_proxies_ext.base_proxy_storage import BaseProxiesStorage
+
 logger = logging.getLogger(__name__)
 
 
-class Proxies(object):
+class Proxies(BaseProxiesStorage):
     """
     Expiring proxies container.
 
@@ -34,6 +36,7 @@ class Proxies(object):
     """
 
     def __init__(self, proxy_list, backoff=None, crawler=None):
+        # super().__init__(proxy_list, backoff, crawler)
         self.proxies = {url: ProxyState() for url in proxy_list}
         self.proxies_by_hostport = {
             extract_proxy_hostport(proxy): proxy

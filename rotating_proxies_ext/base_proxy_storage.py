@@ -21,8 +21,8 @@ class BaseProxiesStorage(object):
     unsuccessful attempt to use a proxy.
     """
 
-    def __init__(self, proxy_list, backoff=None, crawler=None):
-        raise NotImplementedError
+    # def __init__(self, proxy_list, backoff=None, crawler=None):
+    #     raise NotImplementedError
 
     def get_random(self):
         """ Return a random available proxy (either good or unchecked) """
