@@ -46,12 +46,12 @@ with a path to a file with proxies, one per line::
 ``ROTATING_PROXY_LIST_PATH`` takes precedence over ``ROTATING_PROXY_LIST``
 if both options are present.
 
-Then add rotating_proxies middlewares to your DOWNLOADER_MIDDLEWARES::
+Then add rotating_proxies_ext middlewares to your DOWNLOADER_MIDDLEWARES::
 
     DOWNLOADER_MIDDLEWARES = {
         # ...
-        'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-        'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+        'rotating_proxies_ext.middlewares.RotatingProxyMiddleware': 610,
+        'rotating_proxies_ext.middlewares.BanDetectionMiddleware': 620,
         # ...
     }
 
@@ -97,7 +97,7 @@ and ``exception_is_ban`` methods. These methods can return True
 to subclass and modify default BanDetectionPolicy::
 
     # myproject/policy.py
-    from rotating_proxies.policy import BanDetectionPolicy
+    from rotating_proxies_ext.policy import BanDetectionPolicy
 
     class MyPolicy(BanDetectionPolicy):
         def response_is_ban(self, request, response):
@@ -158,7 +158,7 @@ Settings
 * ``ROTATING_PROXY_BACKOFF_CAP`` - backoff time cap, in seconds.
   Default is 3600 (i.e. 60 min).
 * ``ROTATING_PROXY_BAN_POLICY`` - path to a ban detection policy.
-  Default is ``'rotating_proxies.policy.BanDetectionPolicy'``.
+  Default is ``'rotating_proxies_ext.policy.BanDetectionPolicy'``.
 
 
 FAQ

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from scrapy.http import Response, Request
-from rotating_proxies.policy import BanDetectionPolicy
+from rotating_proxies_ext.policy import BanDetectionPolicy
 import pytest
 
 

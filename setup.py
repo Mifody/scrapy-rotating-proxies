@@ -5,7 +5,7 @@ import os
 
 
 def get_version():
-    fn = os.path.join(os.path.dirname(__file__), "rotating_proxies", "__init__.py")
+    fn = os.path.join(os.path.dirname(__file__), "rotating_proxies_ext", "__init__.py")
     with open(fn) as f:
         return re.findall("__version__ = '([\d.\w]+)'", f.read())[0]
 

@@ -12,8 +12,8 @@ from scrapy.utils.url import add_http_if_no_scheme
 from six.moves.urllib.parse import urlsplit
 from twisted.internet import task
 
-from rotating_proxies.expire import Proxies, exp_backoff_full_jitter
-from rotating_proxies.signals import proxy_add, proxy_remove, proxy_dead, proxy_mark_good
+from rotating_proxies_ext.expire import Proxies, exp_backoff_full_jitter
+from rotating_proxies_ext.signals import proxy_add, proxy_remove, proxy_dead, proxy_mark_good
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +27,8 @@ class RotatingProxyMiddleware(object):
 
         DOWNLOADER_MIDDLEWARES = {
             # ...
-            'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-            'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+            'rotating_proxies_ext.middlewares.RotatingProxyMiddleware': 610,
+            'rotating_proxies_ext.middlewares.BanDetectionMiddleware': 620,
             # ...
         }
 
@@ -226,7 +226,7 @@ class BanDetectionMiddleware(object):
 
         DOWNLOADER_MIDDLEWARES = {
             # ...
-            'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+            'rotating_proxies_ext.middlewares.BanDetectionMiddleware': 620,
             # ...
         }
 
@@ -243,7 +243,7 @@ class BanDetectionMiddleware(object):
     to subclass and modify default BanDetectionPolicy::
 
         # myproject/policy.py
-        from rotating_proxies.policy import BanDetectionPolicy
+        from rotating_proxies_ext.policy import BanDetectionPolicy
 
         class MyPolicy(BanDetectionPolicy):
             def response_is_ban(self, request, response):
@@ -283,7 +283,7 @@ class BanDetectionMiddleware(object):
     def _load_policy(cls, crawler):
         policy_path = crawler.settings.get(
             'ROTATING_PROXY_BAN_POLICY',
-            'rotating_proxies.policy.BanDetectionPolicy'
+            'rotating_proxies_ext.policy.BanDetectionPolicy'
         )
         policy_cls = load_object(policy_path)
         if hasattr(policy_cls, 'from_crawler'):
