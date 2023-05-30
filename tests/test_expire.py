@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from rotating_proxies_ext.expire import Proxies, exp_backoff
+from rotating_proxies_ext.expire import InMemoryProxyStorage, exp_backoff
 
 
 def test_proxies():
     proxy_list = ['foo', 'bar', 'baz']
-    p = Proxies(proxy_list)
+    p = InMemoryProxyStorage()
+    p.load_data(proxy_list)
     proxy = p.get_random()
     assert proxy in proxy_list
 
@@ -36,7 +37,8 @@ def test_proxies():
 
 def test_auth_proxies():
     proxy_list = ['http://foo:bar@baz:1234', 'http://egg:1234']
-    p = Proxies(proxy_list)
+    p = InMemoryProxyStorage()
+    p.load_data(proxy_list)
 
     proxy = p.get_proxy('http://baz:1234')
     assert proxy in proxy_list
@@ -46,7 +48,8 @@ def test_auth_proxies():
 
 
 def test_reanimate_reset():
-    p = Proxies(['foo', 'bar', 'baz'])
+    p = InMemoryProxyStorage()
+    p.load_data(['foo', 'bar', 'baz'])
     p.mark_dead('foo', 1000)
     p.mark_dead('bar', 1)
     p.mark_dead('baz', 1)
