@@ -1,5 +1,3 @@
-
-
 class BaseProxiesStorage(object):
     """
     Expiring proxies container.
@@ -23,6 +21,9 @@ class BaseProxiesStorage(object):
 
     # def __init__(self, proxy_list, backoff=None, crawler=None):
     #     raise NotImplementedError
+
+    def load_data(self, proxy_list, backoff=None, crawler=None):
+        raise NotImplementedError
 
     def get_random(self):
         """ Return a random available proxy (either good or unchecked) """
@@ -63,7 +64,6 @@ class BaseProxiesStorage(object):
         """
         raise NotImplementedError
 
-
     @property
     def mean_backoff_time(self):
         raise NotImplementedError
@@ -73,4 +73,4 @@ class BaseProxiesStorage(object):
         raise NotImplementedError
 
     def __str__(self):
-        return  "Base proxy storage class"
+        return "Base proxy storage class"
