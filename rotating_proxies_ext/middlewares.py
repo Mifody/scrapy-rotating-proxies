@@ -7,13 +7,13 @@ from functools import partial
 
 from scrapy import signals
 from scrapy.exceptions import CloseSpider, NotConfigured
-from scrapy.utils.misc import load_object
 from scrapy.utils.url import add_http_if_no_scheme
 from six.moves.urllib.parse import urlsplit
 from twisted.internet import task
 
-from rotating_proxies_ext.expire import Proxies, exp_backoff_full_jitter
+from rotating_proxies_ext.expire import exp_backoff_full_jitter
 from rotating_proxies_ext.signals import proxy_add, proxy_remove, proxy_dead, proxy_mark_good
+from scrapy.utils.misc import load_object
 
 logger = logging.getLogger(__name__)
 
@@ -65,13 +65,12 @@ class RotatingProxyMiddleware(object):
       Default is 3600 (i.e. 60 min).
     """
 
-    def __init__(self, proxy_list, logstats_interval, stop_if_no_proxies,
+    def __init__(self, proxy_storage_class, proxy_list, logstats_interval, stop_if_no_proxies,
                  max_proxies_to_try, backoff_base, backoff_cap, crawler):
 
         backoff = partial(exp_backoff_full_jitter, base=backoff_base, cap=backoff_cap)
-        self.proxies = Proxies(self.cleanup_proxy_list(proxy_list),
-                               crawler=crawler,
-                               backoff=backoff)
+        self.proxies = load_object(proxy_storage_class)
+        self.proxies.load_data(self.cleanup_proxy_list(proxy_list), crawler=crawler, backoff=backoff)
         self.logstats_interval = logstats_interval
         self.reanimate_interval = 5
         self.stop_if_no_proxies = stop_if_no_proxies
@@ -93,6 +92,8 @@ class RotatingProxyMiddleware(object):
         if not proxy_list:
             raise NotConfigured()
         mw = cls(
+            proxy_storage_class=s.get('ROTATING_PROXY_STORAGE_CLASS',
+                                      'rotating_proxies_ext.expire.InMemoryProxyStorage'),
             proxy_list=proxy_list,
             logstats_interval=s.getfloat('ROTATING_PROXY_LOGSTATS_INTERVAL', 30),
             stop_if_no_proxies=s.getbool('ROTATING_PROXY_CLOSE_SPIDER', False),
