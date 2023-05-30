@@ -35,8 +35,7 @@ class Proxies(BaseProxiesStorage):
     unsuccessful attempt to use a proxy.
     """
 
-    def __init__(self, proxy_list, backoff=None, crawler=None):
-        # super().__init__(proxy_list, backoff, crawler)
+    def load_data(self, proxy_list, backoff=None, crawler=None):
         self.proxies = {url: ProxyState() for url in proxy_list}
         self.proxies_by_hostport = {
             extract_proxy_hostport(proxy): proxy

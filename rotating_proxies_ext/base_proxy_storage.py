@@ -19,8 +19,15 @@ class BaseProxiesStorage(object):
     unsuccessful attempt to use a proxy.
     """
 
-    # def __init__(self, proxy_list, backoff=None, crawler=None):
-    #     raise NotImplementedError
+    def __init__(self, proxy_list, backoff=None, crawler=None):
+        self.proxies = {}
+        self.proxies_by_hostport = {}
+        self.unchecked = set()
+        self.good = set()
+        self.dead = set()
+
+        self.backoff = backoff
+        self.crawler = crawler
 
     def load_data(self, proxy_list, backoff=None, crawler=None):
         raise NotImplementedError
