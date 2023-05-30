@@ -14,7 +14,7 @@ from rotating_proxies_ext.base_proxy_storage import BaseProxiesStorage
 logger = logging.getLogger(__name__)
 
 
-class Proxies(BaseProxiesStorage):
+class InMemoryProxyStorage(BaseProxiesStorage):
     """
     Expiring proxies container.
 
